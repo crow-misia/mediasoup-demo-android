@@ -1,9 +1,10 @@
-# Created by https://www.gitignore.io/api/macos,android,androidstudio
-# Edit at https://www.gitignore.io/?templates=macos,android,androidstudio
+ # Created by https://www.toptal.com/developers/gitignore/api/macos,android,androidstudio
+# Edit at https://www.toptal.com/developers/gitignore?templates=macos,android,androidstudio
 
 ### Android ###
 # Built application files
 *.apk
+*.aar
 *.ap_
 *.aab
 
@@ -17,7 +18,8 @@
 bin/
 gen/
 out/
-release/
+#  Uncomment the following line in case you need and you don't have the release build type files in your app
+# release/
 
 # Gradle files
 .gradle/
@@ -59,6 +61,7 @@ captures/
 
 # External native build folder generated in Android Studio 2.2 and later
 .externalNativeBuild
+.cxx/
 
 # Google Services (e.g. APIs or Firebase)
 # google-services.json
@@ -89,6 +92,9 @@ lint/tmp/
 gen-external-apklibs
 output.json
 
+# Replacement of .externalNativeBuild directories introduced
+# with Android Studio 3.5.
+
 ### macOS ###
 # General
 .DS_Store
@@ -97,6 +103,7 @@ output.json
 
 # Icon must end with two \r
 Icon
+
 
 # Thumbnails
 ._*
@@ -150,6 +157,13 @@ Temporary Items
 *~
 *.swp
 
+# Keystore files
+*.jks
+*.keystore
+
+# Google Services (e.g. APIs or Firebase)
+# google-services.json
+
 # Android Patch
 
 # External native build folder generated in Android Studio 2.2 and later
@@ -178,6 +192,7 @@ obj/
 .idea/sqlDataSources.xml
 .idea/dynamic.xml
 .idea/uiDesigner.xml
+.idea/jarRepositories.xml
 
 # OS-specific files
 .DS_Store?
@@ -221,4 +236,4 @@ fabric.properties
 
 !/gradle/wrapper/gradle-wrapper.jar
 
-# End of https://www.gitignore.io/api/macos,android,androidstudio
+# End of https://www.toptal.com/developers/gitignore/api/macos,android,androidstudio

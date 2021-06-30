@@ -8,9 +8,12 @@ import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
+import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
@@ -230,6 +233,16 @@ class RoomActivity : AppCompatActivity() {
                 }
             }
         }
+        binding.chatInput.setOnEditorActionListener(
+            TextView.OnEditorActionListener { textView: TextView, actionId: Int, _: KeyEvent? ->
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    roomClient?.sendChatMessage(textView.text.toString())
+                    textView.text = ""
+                    return@OnEditorActionListener true
+                }
+                false
+            }
+        )
         binding.restartIce.setOnClickListener { client.restartIce() }
 
         // Peers.

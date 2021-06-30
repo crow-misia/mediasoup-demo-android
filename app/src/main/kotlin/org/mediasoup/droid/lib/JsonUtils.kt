@@ -3,6 +3,8 @@ package org.mediasoup.droid.lib
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
 
 object JsonUtils {
     fun jsonPut(json: JSONObject, key: String, value: Any?) {
@@ -30,4 +32,9 @@ object JsonUtils {
             JSONArray()
         }
     }
+}
+
+@OptIn(ExperimentalContracts::class)
+fun String?.toJsonObject(): JSONObject {
+    return this?.let { JsonUtils.toJsonObject(it) } ?: JSONObject()
 }

@@ -27,6 +27,7 @@ import org.webrtc.PeerConnection
 import org.webrtc.PeerConnectionFactory
 import org.webrtc.VideoCapturer
 import timber.log.Timber
+import java.nio.ByteBuffer
 
 
 class RoomClient(
@@ -90,13 +91,13 @@ class RoomClient(
     private var camProducer: Producer? = null
 
     // TODO(Haiyangwu): Local share mediasoup Producer.
-    private val shareProducer: Producer? = null
+    private var shareProducer: Producer? = null
 
-    // TODO(Haiyangwu): Local chat DataProducer.
-    private val chatDataProducer: Producer? = null
+    // Local chat DataProducer.
+    private var chatDataProducer: DataProducer? = null
 
     // TODO(Haiyangwu): Local bot DataProducer.
-    private val botDataProducer: Producer? = null
+    private var botDataProducer: Producer? = null
 
     // jobs worker handler.
     private lateinit var workHandler: Handler
@@ -321,7 +322,36 @@ class RoomClient(
     @Async
     fun enableChatDataProducer() {
         Timber.d("enableChatDataProducer()")
-        // TODO(feature): data channel
+        if (!options.isUseDataChannel) {
+            return
+        }
+
+        chatDataProducer = sendTransport?.produceData(
+            listener = object : DataProducer.Listener {
+                override fun onBufferedAmountChange(dataProducer: DataProducer, sentDataSize: Long) {
+                    Timber.d("chat DataProducer \"bufferedamountlow\" event")
+                }
+
+                override fun onOpen(dataProducer: DataProducer) {
+                    Timber.i("chat DataProducer \"open\" even")
+                }
+
+                override fun onClose(dataProducer: DataProducer) {
+                    Timber.i("chat DataProducer \"close\" event")
+                    chatDataProducer = null
+                }
+
+                override fun onTransportClose(dataProducer: DataProducer) {
+                    chatDataProducer = null
+                }
+            },
+            label = "chat",
+            ordered = false,
+            maxRetransmits = 1,
+            appData = "{\"info\":\"my-chat-DataProducer\"}",
+        )?.also {
+            store.addDataProducer(it)
+        }
     }
 
     @Async
@@ -331,9 +361,14 @@ class RoomClient(
     }
 
     @Async
-    fun sendChatMessage(txt: String?) {
+    fun sendChatMessage(message: String) {
         Timber.d("sendChatMessage()")
-        // TODO(feature): data channel
+
+        if (chatDataProducer == null) {
+            enableChatDataProducer()
+        }
+        chatDataProducer?.send(DataChannel.Buffer(ByteBuffer.wrap(message.toByteArray()), false))
+        Timber.d("Chat message sent: $message")
     }
 
     @Async
@@ -888,7 +923,7 @@ class RoomClient(
                 JsonUtils.jsonPut(req, "transportId", transport.id)
                 JsonUtils.jsonPut(req, "kind", kind)
                 JsonUtils.jsonPut(req, "rtpParameters", JsonUtils.toJsonObject(rtpParameters))
-                JsonUtils.jsonPut(req, "appData", appData)
+                JsonUtils.jsonPut(req, "appData", appData.toJsonObject())
             }
             Timber.tag(listenerTAG).d("producerId: %s", producerId)
             return producerId
@@ -901,10 +936,10 @@ class RoomClient(
             Timber.tag(listenerTAG).d("onProduceData() ")
             val dataProducerId = fetchDataProduceId { req ->
                 JsonUtils.jsonPut(req, "transportId", transport.id)
-                JsonUtils.jsonPut(req, "sctpStreamParameters", JsonUtils.toJsonObject(sctpStreamParameters))
+                JsonUtils.jsonPut(req, "sctpStreamParameters", sctpStreamParameters.toJsonObject())
                 JsonUtils.jsonPut(req, "label", label)
                 JsonUtils.jsonPut(req, "protocol", protocol)
-                JsonUtils.jsonPut(req, "appData", appData)
+                JsonUtils.jsonPut(req, "appData", appData.toJsonObject())
             }
             Timber.tag(listenerTAG).d("dataProducerId: %s", dataProducerId)
             return dataProducerId

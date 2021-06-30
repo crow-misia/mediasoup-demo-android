@@ -30,6 +30,7 @@
     <string name="force_h264">forceH264</string>
     <string name="produce">produce</string>
     <string name="consume">consume</string>
+    <string name="use_data_channel">useDataChannel</string>
     <string name="force_vp9">forceVP9</string>
 
     <!-- Device Preferences -->

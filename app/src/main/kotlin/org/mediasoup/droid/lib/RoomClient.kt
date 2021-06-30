@@ -5,9 +5,9 @@ import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
 import androidx.annotation.WorkerThread
-import io.github.zncmn.mediasoup.*
-import io.github.zncmn.webrtc.RTCComponentFactory
-import io.github.zncmn.webrtc.option.MediaConstraintsOption
+import io.github.crow_misia.mediasoup.*
+import io.github.crow_misia.webrtc.RTCComponentFactory
+import io.github.crow_misia.webrtc.option.MediaConstraintsOption
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.kotlin.subscribeBy
@@ -59,7 +59,7 @@ class RoomClient(
     private val componentFactory = RTCComponentFactory(mediaConstraintsOption)
 
     private val peerConnectionFactory: PeerConnectionFactory by lazy {
-        componentFactory.createPeerConnectionFactory(context) { }
+        componentFactory.createPeerConnectionFactory(context) { _, _ -> }
     }
 
     private val localAudioManager = componentFactory.createAudioManager()
@@ -681,7 +681,7 @@ class RoomClient(
                     }
                 },
                 track = track,
-                encodings = emptyArray(),
+                encodings = emptyList(),
                 codecOptions = null
             )
             this.micProducer = micProducer
@@ -689,7 +689,7 @@ class RoomClient(
         } catch (e: MediasoupException) {
             logError("enableMic() | failed:", e)
             store.addNotify("error", "Error enabling microphone: " + e.message)
-            localAudioManager.enabled = false
+            localAudioManager.setEnabled(false)
         }
     }
 
@@ -778,7 +778,7 @@ class RoomClient(
                     }
                 },
                 track = track,
-                encodings = emptyArray(),
+                encodings = emptyList(),
                 codecOptions = null
             )
             this.camProducer = camProducer

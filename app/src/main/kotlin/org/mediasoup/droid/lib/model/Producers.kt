@@ -1,6 +1,6 @@
 package org.mediasoup.droid.lib.model
 
-import io.github.zncmn.mediasoup.Producer
+import io.github.crow_misia.mediasoup.Producer
 import org.json.JSONArray
 import java.util.concurrent.ConcurrentHashMap
 

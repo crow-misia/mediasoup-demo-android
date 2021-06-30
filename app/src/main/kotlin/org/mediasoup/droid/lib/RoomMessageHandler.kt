@@ -1,8 +1,8 @@
 package org.mediasoup.droid.lib
 
 import androidx.annotation.WorkerThread
-import io.github.zncmn.mediasoup.Consumer
-import io.github.zncmn.mediasoup.DataConsumer
+import io.github.crow_misia.mediasoup.Consumer
+import io.github.crow_misia.mediasoup.DataConsumer
 import org.json.JSONException
 import org.mediasoup.droid.lib.lv.RoomStore
 import org.protoojs.droid.Message

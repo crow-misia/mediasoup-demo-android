@@ -1,6 +1,6 @@
 package org.mediasoup.droid.lib.model
 
-import io.github.zncmn.mediasoup.DataConsumer
+import io.github.crow_misia.mediasoup.DataConsumer
 import java.util.concurrent.ConcurrentHashMap
 
 class DataConsumers {

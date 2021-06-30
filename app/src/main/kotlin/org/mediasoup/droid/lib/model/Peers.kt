@@ -1,7 +1,7 @@
 package org.mediasoup.droid.lib.model
 
-import io.github.zncmn.mediasoup.Consumer
-import io.github.zncmn.mediasoup.DataConsumer
+import io.github.crow_misia.mediasoup.Consumer
+import io.github.crow_misia.mediasoup.DataConsumer
 import org.json.JSONObject
 import timber.log.Timber
 import java.util.*

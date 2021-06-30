@@ -20,8 +20,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
-import io.github.zncmn.webrtc.camera.CameraCapturerFactory
-import io.github.zncmn.webrtc.option.MediaConstraintsOption
+import io.github.crow_misia.webrtc.camera.CameraCapturerFactory
+import io.github.crow_misia.webrtc.option.MediaConstraintsOption
 import org.mediasoup.droid.demo.adapter.PeerAdapter
 import org.mediasoup.droid.demo.databinding.ActivityRoomBinding
 import org.mediasoup.droid.demo.utils.ClipboardCopy
